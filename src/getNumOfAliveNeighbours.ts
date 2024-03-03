@@ -1,6 +1,10 @@
 import { getCellState } from "./getCellState";
 
-export function getNumOfAliveNeighbours(column: number, row: number, field: number[][]) {
+export function getNumOfAliveNeighbours(
+  column: number,
+  row: number,
+  field: number[][],
+) {
   let neighbours = 0;
 
   for (let j = column - 1; j <= column + 1; j += 1) {

@@ -9,6 +9,6 @@ export function getNextState(field: number[][]) {
       const currentState = getCellState(field, cellIndex, rowIndex);
       const newState = getNewCellState(currentState, an);
       return newState;
-    })
+    }),
   );
 }

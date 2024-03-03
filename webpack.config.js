@@ -28,7 +28,6 @@ module.exports = {
     filename: "[name].bundle.js",
   },
   plugins: [
-    
     new HtmlWebpackPlugin({ template: "./public/index.html" }),
     new CleanWebpackPlugin(),
     new webpack.HotModuleReplacementPlugin(),
@@ -40,4 +39,3 @@ module.exports = {
     }),
   ],
 };
-
