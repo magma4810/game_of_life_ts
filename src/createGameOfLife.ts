@@ -6,13 +6,18 @@ export function createGameOfLife(htmlElement: Element){
     let gameIsRunning: boolean = false;
     let timer: number | null | ReturnType<typeof setTimeout> = null;
     let speed: number = 1000;
+    let speedHTML: number = 1000;
     let columns: number = 10;
     let rows: number = 10;
 
-    htmlElement.innerHTML = `<div class="field-wrapper"></div><button class = "start">Start</button>
+    htmlElement.innerHTML = `Columns<button class = "minusColumns">-</button>
+    <input class = "inputColumns" style = "height:10px; width:15px">  <button class = "plusColumns">+</button><br>
+    Rows<button class = "minusRows">-</button>  <input class = "inputRows" style = "height:10px; width:15px">
+    <button class = "plusRows">+</button><br>
+    Speed<button class = "minusSpeed">-</button><u><u class = "speed">${speed/1000}</u> step per second</u><button class = "plusSpeed">+</button><br>
+    <button class = "start">Start</button>
     <button class = "enterSize">Enter size</button>  <button class="clear">Clear</button><br>
-    Columns<button class = "minusColumns">-</button><input class = "inputColumns" style = "height:10px; width:15px"><button class = "plusColumns">+</button><br>
-    Rows<button class = "minusRows">-</button><input class = "inputRows" style = "height:10px; width:15px"><button class = "plusRows">+</button>`;
+    <div class="field-wrapper"></div>`;
     const fieldWrapper: Element | null = htmlElement.querySelector(".field-wrapper");
     const button: Element | null = htmlElement.querySelector(".start");
     let field: number[][] = fillField(rows,columns);
@@ -35,6 +40,7 @@ export function createGameOfLife(htmlElement: Element){
 
     const inputColumns = document.querySelector(".inputColumns");
     const inputRows = document.querySelector(".inputRows");
+    const speedElement = document.querySelector(".speed");
     // @ts-ignore
     inputColumns.value = columns;
     // @ts-ignore
@@ -69,17 +75,37 @@ export function createGameOfLife(htmlElement: Element){
         drawField(fieldWrapper!, field, cellClickHandler);
     })
     document.querySelector(".enterSize")!.addEventListener("click",() => {
+        clearAndEnterSize()
+    })
+    document.querySelector(".clear")!.addEventListener("click",() => {
+        clearAndEnterSize()
+    })
+    function minusSpeed(){
+        document.querySelector(".minusSpeed")!.addEventListener("click",() => {
+            speed += 500;
+            speedHTML -= 500;
+            // @ts-ignore
+            speedElement.textContent = speedHTML/1000;
+        })
+    }
+    minusSpeed();
+    function plusSpeed(){
+        document.querySelector(".plusSpeed")!.addEventListener("click",() => {
+            speed -= 500;
+            speedHTML += 500;
+            // @ts-ignore
+            speedElement.textContent = speedHTML/1000;
+        })
+    }
+    plusSpeed();
+    function clearAndEnterSize(){
         // @ts-ignore
         rows = inputRows.value;
         // @ts-ignore
         columns = inputColumns.value;
         field = fillField(rows,columns);
         drawField(fieldWrapper!, field, cellClickHandler);
-    })
-    document.querySelector(".enterSize")!.addEventListener("click",() => {
-        field = fillField(rows,columns);
-        drawField(fieldWrapper!, field, cellClickHandler);
-    })
+    }
     function stopGame() {
         gameIsRunning = false;
         button!.innerHTML = "Start";
