@@ -5,7 +5,7 @@ import { isAnyoneAlive } from "./isAnyoneAlive";
 export function createGameOfLife(htmlElement: Element) {
   let gameIsRunning: boolean = false;
   let timer: number | null | ReturnType<typeof setTimeout> = null;
-  let speed: number = 1000;
+  let second: number = 1000;
   let speedHTML: number = 1000;
   let columns: number = 10;
   let rows: number = 10;
@@ -14,7 +14,7 @@ export function createGameOfLife(htmlElement: Element) {
     <input class = "inputColumns" style = "height:10px; width:15px">  <button class = "plusColumns">+</button><br>
     Rows<button class = "minusRows">-</button>  <input class = "inputRows" style = "height:10px; width:15px">
     <button class = "plusRows">+</button><br>
-    Speed<button class = "minusSpeed">-</button><u><u class = "speed">${speed / 1000}</u> step per second</u><button class = "plusSpeed">+</button><br>
+    Speed<button class = "minusSpeed">-</button><u> 1 step per <u class = "second">${second / 1000}</u> second </u><button class = "plusSpeed">+</button><br>
     <button class = "start">Start</button>
     <button class = "enterSize">Enter size</button>  <button class="clear">Clear</button><br>
     <div class="field-wrapper"></div>`;
@@ -39,42 +39,66 @@ export function createGameOfLife(htmlElement: Element) {
 
   drawField(fieldWrapper!, field, cellClickHandler);
 
-  const inputColumns = document.querySelector(".inputColumns");
-  const inputRows = document.querySelector(".inputRows");
-  const speedElement = document.querySelector(".speed");
-  // @ts-ignore
-  inputColumns.value = columns;
-  // @ts-ignore
-  inputRows.value = rows;
-  document.querySelector(".minusColumns")!.addEventListener("click", () => {
-    columns--;
-    // @ts-ignore
-    inputColumns.value = columns;
-    field = fillField(rows, columns);
-    drawField(fieldWrapper!, field, cellClickHandler);
-  });
-  document.querySelector(".plusColumns")!.addEventListener("click", () => {
-    columns++;
-    // @ts-ignore
-    inputColumns.value = columns;
-    field = fillField(rows, columns);
-    drawField(fieldWrapper!, field, cellClickHandler);
-  });
-  document.querySelector(".minusRows")!.addEventListener("click", () => {
-    rows--;
-    // @ts-ignore
-    inputRows.value = rows;
-    field = fillField(rows, columns);
-    drawField(fieldWrapper!, field, cellClickHandler);
-    console.log(field);
-  });
-  document.querySelector(".plusRows")!.addEventListener("click", () => {
-    rows++;
-    // @ts-ignore
-    inputRows.value = rows;
-    field = fillField(rows, columns);
-    drawField(fieldWrapper!, field, cellClickHandler);
-  });
+  const inputColumns = document.querySelector(
+    ".inputColumns",
+  ) as HTMLInputElement | null;
+  const inputRows = document.querySelector(
+    ".inputRows",
+  ) as HTMLInputElement | null;
+  const speedElement = document.querySelector(".second");
+  function checkInputColumns() {
+    if (inputColumns) {
+      if (inputColumns && typeof columns === "number") {
+        inputColumns.value = columns.toString();
+      }
+    }
+  }
+  function checkInputRows() {
+    if (inputRows) {
+      if (inputRows && typeof rows === "number") {
+        inputRows.value = rows.toString();
+      }
+    }
+  }
+  checkInputColumns();
+  checkInputRows();
+  const minusColumnsButton = document.querySelector(".minusColumns");
+  if (minusColumnsButton) {
+    minusColumnsButton.addEventListener("click", () => {
+      columns--;
+      checkInputColumns();
+      field = fillField(rows, columns);
+      drawField(fieldWrapper!, field, cellClickHandler);
+    });
+  }
+  const plusColumnsButton = document.querySelector(".plusColumns");
+  if (plusColumnsButton) {
+    plusColumnsButton.addEventListener("click", () => {
+      columns++;
+      checkInputColumns();
+      field = fillField(rows, columns);
+      drawField(fieldWrapper!, field, cellClickHandler);
+    });
+  }
+  const minusRowsButton = document.querySelector(".minusRows");
+  if (minusRowsButton) {
+    minusRowsButton.addEventListener("click", () => {
+      rows--;
+      checkInputRows();
+      field = fillField(rows, columns);
+      drawField(fieldWrapper!, field, cellClickHandler);
+    });
+  }
+  const plusRowsButton = document.querySelector(".plusRows");
+  if (plusRowsButton) {
+    plusRowsButton.addEventListener("click", () => {
+      rows++;
+      checkInputRows();
+      field = fillField(rows, columns);
+      drawField(fieldWrapper!, field, cellClickHandler);
+    });
+  }
+
   function clearAndEnterSize() {
     // @ts-ignore
     rows = inputRows.value;
@@ -83,28 +107,45 @@ export function createGameOfLife(htmlElement: Element) {
     field = fillField(rows, columns);
     drawField(fieldWrapper!, field, cellClickHandler);
   }
-  document.querySelector(".enterSize")!.addEventListener("click", () => {
-    clearAndEnterSize();
-  });
-  document.querySelector(".clear")!.addEventListener("click", () => {
-    clearAndEnterSize();
-  });
-  function minusSpeed() {
-    document.querySelector(".minusSpeed")!.addEventListener("click", () => {
-      speed += 500;
-      speedHTML -= 500;
-      // @ts-ignore
-      speedElement.textContent = speedHTML / 1000;
+  const enterSize = document.querySelector(".enterSize");
+  if (enterSize) {
+    enterSize.addEventListener("click", () => {
+      clearAndEnterSize();
     });
+  }
+  const clear = document.querySelector(".clear");
+  if (clear) {
+    clear.addEventListener("click", () => {
+      clearAndEnterSize();
+    });
+  }
+
+  function minusSpeed() {
+    const minusSpeedHTML = document.querySelector(".minusSpeed");
+    if (minusSpeedHTML) {
+      minusSpeedHTML.addEventListener("click", () => {
+        if (speedHTML > 0) {
+          speedHTML *= 2;
+          second += 500;
+          // @ts-ignore
+          speedElement.textContent = speedHTML / 1000;
+        }
+      });
+    }
   }
   minusSpeed();
   function plusSpeed() {
-    document.querySelector(".plusSpeed")!.addEventListener("click", () => {
-      speed -= 500;
-      speedHTML += 500;
-      // @ts-ignore
-      speedElement.textContent = speedHTML / 1000;
-    });
+    const plusSpeedHTML = document.querySelector(".plusSpeed");
+    if (plusSpeedHTML) {
+      plusSpeedHTML.addEventListener("click", () => {
+        if (speedHTML >= 0) {
+          speedHTML /= 2;
+          second -= 500;
+          // @ts-ignore
+          speedElement.textContent = speedHTML / 1000;
+        }
+      });
+    }
   }
   plusSpeed();
   function stopGame() {
@@ -112,7 +153,6 @@ export function createGameOfLife(htmlElement: Element) {
     button!.innerHTML = "Start";
     clearInterval(timer!);
   }
-
   function startGame() {
     // При клике по кнопке старт
     // - поменять надпись на `Stop`
@@ -133,7 +173,7 @@ export function createGameOfLife(htmlElement: Element) {
         alert("Death on the block");
         stopGame();
       }
-    }, speed);
+    }, second);
   }
   button!.addEventListener("click", () => {
     if (!gameIsRunning) {
