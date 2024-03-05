@@ -171,7 +171,11 @@ describe("createGameOfLife", () => {
 
       createGameOfLife(element);
       onCellClick(0, 0);
-      element.querySelector("button")!.click();
+      const startButton = element.querySelector(".start");
+      const clickEvent = new MouseEvent("click", {});
+      if (startButton) {
+        startButton.dispatchEvent(clickEvent);
+      }
       expect(element.querySelector(".field-wrapper")!.innerHTML).toBe(
         `drawField(${JSON.stringify([
           [1, 0, 0, 0, 0, 0, 0, 0, 0, 0],
