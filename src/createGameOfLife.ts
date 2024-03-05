@@ -2,6 +2,7 @@ import { drawField } from "./drawField";
 import { getNextState } from "./getNextState";
 import { isAnyoneAlive } from "./isAnyoneAlive";
 import { gosperGliderGun } from "./gosperGliderGun";
+import { virus } from "./virus";
 
 export function createGameOfLife(htmlElement: Element) {
   let gameIsRunning: boolean = false;
@@ -11,7 +12,8 @@ export function createGameOfLife(htmlElement: Element) {
   let columns: number = 10;
   let rows: number = 10;
 
-  htmlElement.innerHTML = `<button class = "setFirst" style = "float:right">Gosper glider gun</button>
+  htmlElement.innerHTML = `<button class = "setFirst" style = "float:right">Gosper glider gun</button><br>
+  <button class = "setSecond" style = "float:right">Virus</button>
   Columns<button class = "minusColumns">-</button>
     <input class = "inputColumns" style = "height:10px; width:15px">  <button class = "plusColumns">+</button><br>
     Rows<button class = "minusRows">-</button>  <input class = "inputRows" style = "height:10px; width:15px">
@@ -126,12 +128,17 @@ export function createGameOfLife(htmlElement: Element) {
     const minusSpeedHTML = htmlElement.querySelector(".minusSpeed");
     if (minusSpeedHTML) {
       minusSpeedHTML.addEventListener("click", () => {
-        if (speedHTML >= 0) {
-          speedHTML += 100;
-          second += 100;
-          // @ts-ignore
-          speedElement.textContent = speedHTML / 1000;
-        }
+        if (speedHTML < 100 ) {
+            speedHTML += 10;
+            second += 10;
+            // @ts-ignore
+            speedElement.textContent = speedHTML / 1000;
+          } else{
+            speedHTML += 100;
+            second += 100;
+            // @ts-ignore
+            speedElement.textContent = speedHTML / 1000;
+          }
       });
     }
   }
@@ -140,12 +147,12 @@ export function createGameOfLife(htmlElement: Element) {
     const plusSpeedHTML = htmlElement.querySelector(".plusSpeed");
     if (plusSpeedHTML) {
       plusSpeedHTML.addEventListener("click", () => {
-        if (speedHTML <= 100) {
+        if (speedHTML <= 100 && speedHTML > 0) {
           speedHTML -= 10;
           second -= 10;
           // @ts-ignore
           speedElement.textContent = speedHTML / 1000;
-        } else if (speedHTML > 0) {
+        } else if(speedHTML > 0){
           speedHTML -= 100;
           second -= 100;
           // @ts-ignore
@@ -158,6 +165,11 @@ export function createGameOfLife(htmlElement: Element) {
   const setFirst = htmlElement.querySelector(".setFirst");
   setFirst?.addEventListener("click", () => {
     field = gosperGliderGun();
+    drawField(fieldWrapper!, field, cellClickHandler);
+  });
+  const setSecond = htmlElement.querySelector(".setSecond");
+  setSecond?.addEventListener("click", () => {
+    field = virus();
     drawField(fieldWrapper!, field, cellClickHandler);
   });
   function stopGame() {
