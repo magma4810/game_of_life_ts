@@ -96,24 +96,45 @@ export function createGameOfLife(htmlElement: Element) {
     });
   }
 
-  function clearAndEnterSize() {
+  function inputSize() {
     // @ts-ignore
     rows = inputRows.value;
     // @ts-ignore
     columns = inputColumns.value;
-    field = Array.from({ length: Number(rows) }, () => Array(Number(columns)).fill(0));
+    const newField: number[][] = [];
+    let lengthFieldRow = field.length;
+    let lengthFieldColumn = field[0].length;
+    for(let i = 0;i<rows;i++){
+        lengthFieldRow = field.length;
+        lengthFieldColumn = field[0].length;
+        newField[i] = [];
+        for(let j = 0;j<columns;j++){
+            if(lengthFieldRow > i && lengthFieldColumn > j){
+                if(field[i][j] === 1){
+                    newField[i][j] = 1;
+                }else{
+                    newField[i][j] = 0;
+                }
+            }else{
+                newField[i][j] = 0;
+            }
+            
+        }
+    }
+    field = newField;
     drawField(fieldWrapper!, field, cellClickHandler);
   }
   const enterSize = htmlElement.querySelector(".enterSize");
   if (enterSize) {
     enterSize.addEventListener("click", () => {
-      clearAndEnterSize();
+        inputSize();
     });
   }
   const clear = htmlElement.querySelector(".clear");
   if (clear) {
     clear.addEventListener("click", () => {
-      clearAndEnterSize();
+        field = Array.from({ length: rows }, () => Array(columns).fill(0)); 
+        drawField(fieldWrapper!, field, cellClickHandler);       
     });
   }
 
@@ -155,19 +176,30 @@ export function createGameOfLife(htmlElement: Element) {
     }
   }
   plusSpeed();
+  function update(){
+    columns = 60;
+    rows = 40;
+    // @ts-ignore
+    inputColumns.value = columns;
+    // @ts-ignore
+    inputRows.value = rows;
+  }
   const setFirst = htmlElement.querySelector(".setFirst");
   setFirst?.addEventListener("click", () => {
     field = gosperGliderGun();
+    update();
     drawField(fieldWrapper!, field, cellClickHandler);
   });
   const setSecond = htmlElement.querySelector(".setSecond");
   setSecond?.addEventListener("click", () => {
     field = virus();
+    update();
     drawField(fieldWrapper!, field, cellClickHandler);
   });
   const setThird = htmlElement.querySelector(".setThird");
   setThird?.addEventListener("click", () => {
     field = locomotive();
+    update();
     drawField(fieldWrapper!, field, cellClickHandler);
   });
   function stopGame() {
