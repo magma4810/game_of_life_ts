@@ -43,12 +43,15 @@ export function createGameOfLife(htmlElement: Element) {
   checkInputColumns();
   checkInputRows();
   const minusColumnsButton = htmlElement.querySelector(".minusColumns");
-  if (minusColumnsButton) {// сделать без перерисовки
+  if (minusColumnsButton) {
     minusColumnsButton.addEventListener("click", () => {
       columns--;
       checkInputColumns();
       field.map((el) => el.pop());
-      drawField(fieldWrapper!, field);
+      const rowsHTML = htmlElement.querySelector('table')!.rows;
+      for(let i = 0;i< rows;i++){
+        rowsHTML[i].deleteCell(0);   
+      }
     });
   }
   const plusColumnsButton = htmlElement.querySelector(".plusColumns");
@@ -57,7 +60,19 @@ export function createGameOfLife(htmlElement: Element) {
       columns++;
       checkInputColumns();
       field.map((el) => el.push(0));
-      drawField(fieldWrapper!, field);
+      const rowsHTML = htmlElement.querySelector('table')!.rows;
+      for (let i = 0; i < rows; i++) {
+        const cell = document.createElement('td');
+        
+        cell.setAttribute('data-x', columns.toString());
+        cell.setAttribute('data-y', rows.toString());
+        cell.classList.add('cell', 'dead');
+        cell.style.backgroundColor = '#FFFFFF';
+        cell.style.height = '10px';
+        cell.style.width = '10px';
+        rowsHTML[i].appendChild(cell);
+    }
+    
     });
   }
   const minusRowsButton = htmlElement.querySelector(".minusRows");
@@ -66,7 +81,8 @@ export function createGameOfLife(htmlElement: Element) {
       rows--;
       checkInputRows();
       field.pop();
-      drawField(fieldWrapper!, field);
+      const rowsHTML = htmlElement.querySelector('table')!.rows;
+      rowsHTML[rowsHTML.length-1].remove();   
     });
   }
   const plusRowsButton = htmlElement.querySelector(".plusRows");
@@ -75,7 +91,19 @@ export function createGameOfLife(htmlElement: Element) {
       rows++;
       checkInputRows();
       field.push(Array(columns).fill(0));
-      drawField(fieldWrapper!, field);
+      const column = document.createElement('tr');
+      const rowsHTML = htmlElement.querySelector('tbody')!;
+      for(let i = 0;i<columns;i++){
+        const cell = document.createElement('td');
+        cell.setAttribute('data-x', columns.toString());
+        cell.setAttribute('data-y', rows.toString());
+        cell.classList.add('cell', 'dead');
+        cell.style.backgroundColor = '#FFFFFF';
+        cell.style.height = '10px';
+        cell.style.width = '10px';
+        column.append(cell);
+      }
+      rowsHTML.append(column);
     });
   }
 
