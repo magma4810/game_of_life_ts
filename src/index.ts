@@ -4,7 +4,7 @@
 import { createGameOfLife } from "./createGameOfLife";
 
 const game1: Element = document.createElement("div");
-
+game1.className = "game1";
 document.body.append(game1);
 
 createGameOfLife(game1);
