@@ -1,4 +1,4 @@
-import { drawField } from "./drawField";
+import { drawField, drawInit } from "./draw";
 import { getNextState } from "./getNextState";
 import { isAnyoneAlive } from "./isAnyoneAlive";
 import { gosperGliderGun } from "./gosperGliderGun";
@@ -13,33 +13,28 @@ export function createGameOfLife(htmlElement: Element) {
   let columns: number = 10;
   let rows: number = 10;
 
-  htmlElement.innerHTML = `<button class = "setFirst" style = "float:right">Gosper glider gun</button><br>
-  <button class = "setSecond" style = "float:right">Virus</button>
-  <button class = "setThird" style = "float:right">Locomotive</button>
-  Columns<button class = "minusColumns">-</button>
-    <input class = "inputColumns" style = "height:10px; width:15px">  <button class = "plusColumns">+</button><br>
-    Rows<button class = "minusRows">-</button>  <input class = "inputRows" style = "height:10px; width:15px">
-    <button class = "plusRows">+</button><br>
-    Speed<button class = "minusSpeed">-</button><u> 1 step per <u class = "second">${speedHTML / 1000}</u> second </u><button class = "plusSpeed">+</button><br>
-    <button class = "start">Start</button>
-    <button class = "enterSize">Enter size</button>  <button class="clear">Clear</button><br>
-    <div class="field-wrapper"></div>`;
-  const fieldWrapper: Element | null =
-    htmlElement.querySelector(".field-wrapper");
-  const button: Element | null = htmlElement.querySelector(".start");
+  drawInit(htmlElement, speedHTML);
+
+  let fieldWrapper: Element | null;
+  let button: Element | null;
+  let inputColumns: HTMLInputElement | null;
+  let inputRows: HTMLInputElement | null;
+  let speedElement: Element | null;
+  let minusColumnsButton: Element | null;
+  if (htmlElement) {
+    fieldWrapper = htmlElement.querySelector(".field-wrapper");
+    button = htmlElement.querySelector(".start");
+    inputColumns = htmlElement.querySelector(".inputColumns");
+    inputRows = htmlElement.querySelector(".inputRows");
+    speedElement = htmlElement.querySelector(".second");
+    minusColumnsButton = htmlElement.querySelector(".minusColumns");
+  
+
   let field: number[][] = Array.from({ length: rows }, () =>
     Array(columns).fill(0),
   );
 
   drawField(fieldWrapper!, field);
-
-  const inputColumns = htmlElement.querySelector(
-    ".inputColumns",
-  ) as HTMLInputElement | null;
-  const inputRows = htmlElement.querySelector(
-    ".inputRows",
-  ) as HTMLInputElement | null;
-  const speedElement = htmlElement.querySelector(".second");
   function checkInputColumns() {
     if (inputColumns) {
       if (inputColumns && typeof columns === "number") {
@@ -56,7 +51,6 @@ export function createGameOfLife(htmlElement: Element) {
   }
   checkInputColumns();
   checkInputRows();
-  const minusColumnsButton = htmlElement.querySelector(".minusColumns");
   if (minusColumnsButton) {
     minusColumnsButton.addEventListener("click", () => {
       columns--;
@@ -125,7 +119,7 @@ export function createGameOfLife(htmlElement: Element) {
     enterSize.addEventListener("click", () => {
       inputSize();
     });
-}
+  }
 
   function minusSpeed() {
     const minusSpeedHTML = htmlElement.querySelector(".minusSpeed");
@@ -226,11 +220,13 @@ export function createGameOfLife(htmlElement: Element) {
       }
     }, second);
   }
-  button!.addEventListener("click", () => {
-    if (!gameIsRunning) {
-      startGame();
-    } else {
-      stopGame();
-    }
-  });
-}
+  if (button) {
+    button.addEventListener("click", () => {
+      if (!gameIsRunning) {
+        startGame();
+      } else {
+        stopGame();
+      }
+    });
+  }
+}}

@@ -1,4 +1,4 @@
-import { drawField } from "./drawField";
+import { drawField } from "./draw";
 
 describe("drawField", () => {
   let el: Element;
