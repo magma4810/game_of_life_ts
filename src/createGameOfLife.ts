@@ -27,14 +27,11 @@ export function createGameOfLife(htmlElement: Element) {
   const fieldWrapper: Element | null =
     htmlElement.querySelector(".field-wrapper");
   const button: Element | null = htmlElement.querySelector(".start");
-  let field: number[][] = Array.from({ length: rows }, () => Array(columns).fill(0));
-  
-  function cellClickHandler(x: number, y: number) {
-    field[y][x] = field[y][x] === 0 ? 1 : 0;
-    drawField(fieldWrapper!, field, cellClickHandler);
-  }
+  let field: number[][] = Array.from({ length: rows }, () =>
+    Array(columns).fill(0),
+  );
 
-  drawField(fieldWrapper!, field, cellClickHandler);
+  drawField(fieldWrapper!, field);
 
   const inputColumns = htmlElement.querySelector(
     ".inputColumns",
@@ -64,8 +61,8 @@ export function createGameOfLife(htmlElement: Element) {
     minusColumnsButton.addEventListener("click", () => {
       columns--;
       checkInputColumns();
-      field.map(el => el.pop());
-      drawField(fieldWrapper!, field, cellClickHandler);
+      field.map((el) => el.pop());
+      drawField(fieldWrapper!, field);
     });
   }
   const plusColumnsButton = htmlElement.querySelector(".plusColumns");
@@ -73,8 +70,8 @@ export function createGameOfLife(htmlElement: Element) {
     plusColumnsButton.addEventListener("click", () => {
       columns++;
       checkInputColumns();
-    field.map(el => el.push(0));
-      drawField(fieldWrapper!, field, cellClickHandler);
+      field.map((el) => el.push(0));
+      drawField(fieldWrapper!, field);
     });
   }
   const minusRowsButton = htmlElement.querySelector(".minusRows");
@@ -83,7 +80,7 @@ export function createGameOfLife(htmlElement: Element) {
       rows--;
       checkInputRows();
       field.pop();
-      drawField(fieldWrapper!, field, cellClickHandler);
+      drawField(fieldWrapper!, field);
     });
   }
   const plusRowsButton = htmlElement.querySelector(".plusRows");
@@ -91,8 +88,8 @@ export function createGameOfLife(htmlElement: Element) {
     plusRowsButton.addEventListener("click", () => {
       rows++;
       checkInputRows();
-      field.push(Array(columns).fill(0))
-      drawField(fieldWrapper!, field, cellClickHandler);
+      field.push(Array(columns).fill(0));
+      drawField(fieldWrapper!, field);
     });
   }
 
@@ -104,39 +101,31 @@ export function createGameOfLife(htmlElement: Element) {
     const newField: number[][] = [];
     let lengthFieldRow = field.length;
     let lengthFieldColumn = field[0].length;
-    for(let i = 0;i<rows;i++){
-        lengthFieldRow = field.length;
-        lengthFieldColumn = field[0].length;
-        newField[i] = [];
-        for(let j = 0;j<columns;j++){
-            if(lengthFieldRow > i && lengthFieldColumn > j){
-                if(field[i][j] === 1){
-                    newField[i][j] = 1;
-                }else{
-                    newField[i][j] = 0;
-                }
-            }else{
-                newField[i][j] = 0;
-            }
-            
+    for (let i = 0; i < rows; i++) {
+      lengthFieldRow = field.length;
+      lengthFieldColumn = field[0].length;
+      newField[i] = [];
+      for (let j = 0; j < columns; j++) {
+        if (lengthFieldRow > i && lengthFieldColumn > j) {
+          if (field[i][j] === 1) {
+            newField[i][j] = 1;
+          } else {
+            newField[i][j] = 0;
+          }
+        } else {
+          newField[i][j] = 0;
         }
+      }
     }
     field = newField;
-    drawField(fieldWrapper!, field, cellClickHandler);
+    drawField(fieldWrapper!, field);
   }
   const enterSize = htmlElement.querySelector(".enterSize");
   if (enterSize) {
     enterSize.addEventListener("click", () => {
-        inputSize();
+      inputSize();
     });
-  }
-  const clear = htmlElement.querySelector(".clear");
-  if (clear) {
-    clear.addEventListener("click", () => {
-        field = Array.from({ length: rows }, () => Array(columns).fill(0)); 
-        drawField(fieldWrapper!, field, cellClickHandler);       
-    });
-  }
+}
 
   function minusSpeed() {
     const minusSpeedHTML = htmlElement.querySelector(".minusSpeed");
@@ -176,7 +165,7 @@ export function createGameOfLife(htmlElement: Element) {
     }
   }
   plusSpeed();
-  function update(){
+  function update() {
     columns = 60;
     rows = 40;
     // @ts-ignore
@@ -188,24 +177,32 @@ export function createGameOfLife(htmlElement: Element) {
   setFirst?.addEventListener("click", () => {
     field = gosperGliderGun();
     update();
-    drawField(fieldWrapper!, field, cellClickHandler);
+    drawField(fieldWrapper!, field);
   });
   const setSecond = htmlElement.querySelector(".setSecond");
   setSecond?.addEventListener("click", () => {
     field = virus();
     update();
-    drawField(fieldWrapper!, field, cellClickHandler);
+    drawField(fieldWrapper!, field);
   });
   const setThird = htmlElement.querySelector(".setThird");
   setThird?.addEventListener("click", () => {
     field = locomotive();
     update();
-    drawField(fieldWrapper!, field, cellClickHandler);
+    drawField(fieldWrapper!, field);
   });
   function stopGame() {
     gameIsRunning = false;
     button!.innerHTML = "Start";
     clearInterval(timer!);
+  }
+  const clear = htmlElement.querySelector(".clear");
+  if (clear) {
+    clear.addEventListener("click", () => {
+      field = Array.from({ length: rows }, () => Array(columns).fill(0));
+      drawField(fieldWrapper!, field);
+    });
+    stopGame();
   }
   function startGame() {
     // При клике по кнопке старт
@@ -222,7 +219,7 @@ export function createGameOfLife(htmlElement: Element) {
       //    - остановить таймер
       //    - вывести сообщение
       field = getNextState(field);
-      drawField(fieldWrapper!, field, cellClickHandler);
+      drawField(fieldWrapper!, field);
       if (!isAnyoneAlive(field)) {
         alert("Death on the block");
         stopGame();

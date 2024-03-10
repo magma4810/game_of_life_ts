@@ -1,10 +1,6 @@
 import { getNumOfAliveNeighbours } from "./getNumOfAliveNeighbours";
 
-export function drawField(
-  htmlElement: Element,
-  field: number[][],
-  onCellClick: (arg1: number, arg2: number) => void,
-) {
+export function drawField(htmlElement: Element, field: number[][]) {
   const rowIterator = (row: number[], rowIndex: number) =>
     `<tr>${row
       .map((cell: number, columnIndex: number) => {
@@ -13,6 +9,7 @@ export function drawField(
           rowIndex,
           field,
         );
+        // console.log('+');
         if ((neighbours < 2 || neighbours > 3) && cell === 1) {
           return `<td 
             data-x=${columnIndex}
@@ -45,8 +42,18 @@ export function drawField(
     const x = clickedElement.getAttribute("data-x");
     // @ts-ignore
     const y = clickedElement.getAttribute("data-y");
-    if (x >= 0 && y >= 0) {
-      onCellClick(Number(x), Number(y));
+    if (field[y] && typeof field[y][x] !== 'undefined') {
+        field[y][x] = field[y][x] === 0 ? 1 : 0;
+      
+      if (y >= 0 && x >= 0) {
+        const element = document.querySelector(
+          `[data-x="${x}"][data-y="${y}"]`,
+        );
+        // @ts-ignore
+        element.style.backgroundColor = "#000000";
+        // @ts-ignore
+        element.className = "cell alive";
+      }
     }
   });
 }
