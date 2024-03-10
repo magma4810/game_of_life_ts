@@ -73,22 +73,19 @@ describe("createGameOfLife", () => {
     });
 
     it("redraw field on interaction with it", () => {
-        let onCellClick: (arg1: number, arg2: number) => void = jest.fn();
-        function drawFieldHTML(field: number[][]): string {
-          return `drawField(${JSON.stringify(field)})`;
-        }
-        (drawField as jest.Mock).mockImplementation(
-          (
-            fieldEl: Element,
-            field: number[][],
-          ) => {
-            onCellClick = (x: number,y: number) => {
-                field[y][x] = field[y][x] === 0 ? 1 : 0;
-                drawField(fieldEl!, field);
-            };
-            fieldEl.innerHTML = drawFieldHTML(field);
-          },
-        );
+      let onCellClick: (arg1: number, arg2: number) => void = jest.fn();
+      function drawFieldHTML(field: number[][]): string {
+        return `drawField(${JSON.stringify(field)})`;
+      }
+      (drawField as jest.Mock).mockImplementation(
+        (fieldEl: Element, field: number[][]) => {
+          onCellClick = (x: number, y: number) => {
+            field[y][x] = field[y][x] === 0 ? 1 : 0;
+            drawField(fieldEl!, field);
+          };
+          fieldEl.innerHTML = drawFieldHTML(field);
+        },
+      );
 
       createGameOfLife(element);
 
@@ -154,22 +151,19 @@ describe("createGameOfLife", () => {
       );
     });
     it("on start it runs 1sec timer to update state", async () => {
-        let onCellClick: (arg1: number, arg2: number) => void = jest.fn();
-        function drawFieldHTML(field: number[][]): string {
-          return `drawField(${JSON.stringify(field)})`;
-        }
-        (drawField as jest.Mock).mockImplementation(
-          (
-            fieldEl: Element,
-            field: number[][],
-          ) => {
-            onCellClick = (x: number,y: number) => {
-                field[y][x] = field[y][x] === 0 ? 1 : 0;
-                drawField(fieldEl!, field);
-            };
-            fieldEl.innerHTML = drawFieldHTML(field);
-          },
-        );
+      let onCellClick: (arg1: number, arg2: number) => void = jest.fn();
+      function drawFieldHTML(field: number[][]): string {
+        return `drawField(${JSON.stringify(field)})`;
+      }
+      (drawField as jest.Mock).mockImplementation(
+        (fieldEl: Element, field: number[][]) => {
+          onCellClick = (x: number, y: number) => {
+            field[y][x] = field[y][x] === 0 ? 1 : 0;
+            drawField(fieldEl!, field);
+          };
+          fieldEl.innerHTML = drawFieldHTML(field);
+        },
+      );
 
       createGameOfLife(element);
       onCellClick(0, 0);
@@ -192,39 +186,36 @@ describe("createGameOfLife", () => {
           [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ])})`,
       );
-        await sleep(1000); 
-        expect(element.querySelector(".field-wrapper")!.innerHTML).toBe(
-          `drawField(${JSON.stringify([
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0],
-              [0,0,0,0,0,0,0,0,0,0]
-          ])})`,
-        );
+      await sleep(1000);
+      expect(element.querySelector(".field-wrapper")!.innerHTML).toBe(
+        `drawField(${JSON.stringify([
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+          [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        ])})`,
+      );
     });
     it("stops game with alert, when none alive", async () => {
-        let onCellClick: (arg1: number, arg2: number) => void = jest.fn();
-        function drawFieldHTML(field: number[][]): string {
-          return `drawField(${JSON.stringify(field)})`;
-        }
-        (drawField as jest.Mock).mockImplementation(
-          (
-            fieldEl: Element,
-            field: number[][],
-          ) => {
-            onCellClick = (x: number,y: number) => {
-                field[y][x] = field[y][x] === 0 ? 1 : 0;
-                drawField(fieldEl!, field);
-            };
-            fieldEl.innerHTML = drawFieldHTML(field);
-          },
-        );
+      let onCellClick: (arg1: number, arg2: number) => void = jest.fn();
+      function drawFieldHTML(field: number[][]): string {
+        return `drawField(${JSON.stringify(field)})`;
+      }
+      (drawField as jest.Mock).mockImplementation(
+        (fieldEl: Element, field: number[][]) => {
+          onCellClick = (x: number, y: number) => {
+            field[y][x] = field[y][x] === 0 ? 1 : 0;
+            drawField(fieldEl!, field);
+          };
+          fieldEl.innerHTML = drawFieldHTML(field);
+        },
+      );
 
       createGameOfLife(element);
       onCellClick(0, 0);

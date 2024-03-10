@@ -4,6 +4,7 @@ import { isAnyoneAlive } from "./isAnyoneAlive";
 import { gosperGliderGun } from "./gosperGliderGun";
 import { virus } from "./virus";
 import { locomotive } from "./locomotive";
+import { gameInit } from "./gameInit";
 
 export function createGameOfLife(htmlElement: Element) {
   let gameIsRunning: boolean = false;
@@ -12,18 +13,7 @@ export function createGameOfLife(htmlElement: Element) {
   let speedHTML: number = 1000;
   let columns: number = 10;
   let rows: number = 10;
-
-  htmlElement.innerHTML = `<button class = "setFirst" style = "float:right">Gosper glider gun</button><br>
-  <button class = "setSecond" style = "float:right">Virus</button>
-  <button class = "setThird" style = "float:right">Locomotive</button>
-  Columns<button class = "minusColumns">-</button>
-    <input class = "inputColumns" style = "height:10px; width:15px">  <button class = "plusColumns">+</button><br>
-    Rows<button class = "minusRows">-</button>  <input class = "inputRows" style = "height:10px; width:15px">
-    <button class = "plusRows">+</button><br>
-    Speed<button class = "minusSpeed">-</button><u> 1 step per <u class = "second">${speedHTML / 1000}</u> second </u><button class = "plusSpeed">+</button><br>
-    <button class = "start">Start</button>
-    <button class = "enterSize">Enter size</button>  <button class="clear">Clear</button><br>
-    <div class="field-wrapper"></div>`;
+  gameInit(htmlElement,speedHTML);
   const fieldWrapper: Element | null =
     htmlElement.querySelector(".field-wrapper");
   const button: Element | null = htmlElement.querySelector(".start");
@@ -42,22 +32,18 @@ export function createGameOfLife(htmlElement: Element) {
   const speedElement = htmlElement.querySelector(".second");
   function checkInputColumns() {
     if (inputColumns) {
-      if (inputColumns && typeof columns === "number") {
         inputColumns.value = columns.toString();
-      }
     }
   }
   function checkInputRows() {
     if (inputRows) {
-      if (inputRows && typeof rows === "number") {
         inputRows.value = rows.toString();
-      }
     }
   }
   checkInputColumns();
   checkInputRows();
   const minusColumnsButton = htmlElement.querySelector(".minusColumns");
-  if (minusColumnsButton) {
+  if (minusColumnsButton) {// сделать без перерисовки
     minusColumnsButton.addEventListener("click", () => {
       columns--;
       checkInputColumns();
@@ -205,19 +191,9 @@ export function createGameOfLife(htmlElement: Element) {
     stopGame();
   }
   function startGame() {
-    // При клике по кнопке старт
-    // - поменять надпись на `Stop`
     gameIsRunning = true;
     button!.innerHTML = "Stop";
-    // - запустить таймер для обновления поля
     timer = setInterval(() => {
-      // В таймере обновления поля
-      // - посчитать новое состояние поля
-      // - отрисовать новое состояние поля
-      // - проверить, что есть живые клетки
-      // - если живых клеток нет
-      //    - остановить таймер
-      //    - вывести сообщение
       field = getNextState(field);
       drawField(fieldWrapper!, field);
       if (!isAnyoneAlive(field)) {

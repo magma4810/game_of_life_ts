@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <title>Code coverage report for getCellState.ts</title>
+    <title>Code coverage report for gameInit.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="prettify.css" />
     <link rel="stylesheet" href="base.css" />
@@ -17,18 +17,18 @@
   <body>
     <div class="wrapper">
       <div class="pad1">
-        <h1><a href="index.html">All files</a> getCellState.ts</h1>
+        <h1><a href="index.html">All files</a> gameInit.ts</h1>
         <div class="clearfix">
           <div class="fl pad1y space-right2">
             <span class="strong">100% </span>
             <span class="quiet">Statements</span>
-            <span class="fraction">7/7</span>
+            <span class="fraction">1/1</span>
           </div>
 
           <div class="fl pad1y space-right2">
             <span class="strong">100% </span>
             <span class="quiet">Branches</span>
-            <span class="fraction">4/4</span>
+            <span class="fraction">0/0</span>
           </div>
 
           <div class="fl pad1y space-right2">
@@ -40,7 +40,7 @@
           <div class="fl pad1y space-right2">
             <span class="strong">100% </span>
             <span class="quiet">Lines</span>
-            <span class="fraction">7/7</span>
+            <span class="fraction">1/1</span>
           </div>
         </div>
         <p class="quiet">
@@ -67,29 +67,32 @@
 <a name='L9'></a><a href='#L9'>9</a>
 <a name='L10'></a><a href='#L10'>10</a>
 <a name='L11'></a><a href='#L11'>11</a>
-<a name='L12'></a><a href='#L12'>12</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2788x</span>
-<span class="cline-any cline-yes">2788x</span>
-<span class="cline-any cline-yes">210x</span>
+<a name='L12'></a><a href='#L12'>12</a>
+<a name='L13'></a><a href='#L13'>13</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2578x</span>
-<span class="cline-any cline-yes">2578x</span>
-<span class="cline-any cline-yes">186x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2392x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export function getCellState(field: number[][], x: number, y: number) {
-  const row = field[y];
-  if (row === undefined) {
-    return 0;
-  }
-  const cell = row[x];
-  if (cell === undefined) {
-    return 0;
-  }
-  return cell;
-}
-&nbsp;</pre></td></tr></table></pre>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">export function gameInit(htmlElement: Element,speedHTML: number){
+    htmlElement.innerHTML = `&lt;button class = "setFirst" style = "float:right"&gt;Gosper glider gun&lt;/button&gt;&lt;br&gt;
+  &lt;button class = "setSecond" style = "float:right"&gt;Virus&lt;/button&gt;
+  &lt;button class = "setThird" style = "float:right"&gt;Locomotive&lt;/button&gt;
+  Columns&lt;button class = "minusColumns"&gt;-&lt;/button&gt;
+    &lt;input class = "inputColumns" style = "height:10px; width:15px"&gt;  &lt;button class = "plusColumns"&gt;+&lt;/button&gt;&lt;br&gt;
+    Rows&lt;button class = "minusRows"&gt;-&lt;/button&gt;  &lt;input class = "inputRows" style = "height:10px; width:15px"&gt;
+    &lt;button class = "plusRows"&gt;+&lt;/button&gt;&lt;br&gt;
+    Speed&lt;button class = "minusSpeed"&gt;-&lt;/button&gt;&lt;u&gt; 1 step per &lt;u class = "second"&gt;${speedHTML / 1000}&lt;/u&gt; second &lt;/u&gt;&lt;button class = "plusSpeed"&gt;+&lt;/button&gt;&lt;br&gt;
+    &lt;button class = "start"&gt;Start&lt;/button&gt;
+    &lt;button class = "enterSize"&gt;Enter size&lt;/button&gt;  &lt;button class="clear"&gt;Clear&lt;/button&gt;&lt;br&gt;
+    &lt;div class="field-wrapper"&gt;&lt;/div&gt;`;
+}</pre></td></tr></table></pre>
 
       <div class="push"></div>
       <!-- for sticky footer -->

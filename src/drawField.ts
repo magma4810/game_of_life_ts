@@ -9,7 +9,6 @@ export function drawField(htmlElement: Element, field: number[][]) {
           rowIndex,
           field,
         );
-        // console.log('+');
         if ((neighbours < 2 || neighbours > 3) && cell === 1) {
           return `<td 
             data-x=${columnIndex}
@@ -42,9 +41,9 @@ export function drawField(htmlElement: Element, field: number[][]) {
     const x = clickedElement.getAttribute("data-x");
     // @ts-ignore
     const y = clickedElement.getAttribute("data-y");
-    if (field[y] && typeof field[y][x] !== 'undefined') {
-        field[y][x] = field[y][x] === 0 ? 1 : 0;
-      
+    if (field[y] && typeof field[y][x] !== "undefined") {
+      field[y][x] = field[y][x] === 0 ? 1 : 0;
+
       if (y >= 0 && x >= 0) {
         const element = document.querySelector(
           `[data-x="${x}"][data-y="${y}"]`,
