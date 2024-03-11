@@ -11,7 +11,8 @@ import {
     plusRows,
     minusRows,
     inputSize,
-
+    rows,
+    columns,
     speed,
     minusSpeed,
     plusSpeed,
@@ -34,10 +35,30 @@ export function createGameOfLife(htmlElement: Element) {
     ) as HTMLInputElement | null;
 
     drawField(fieldWrapper!, field);
-    plusColumn(htmlElement, field);
-    minusColumn(htmlElement, field);
-    plusRows(htmlElement, field);
-    minusRows(htmlElement, field);
+    const plusColumnsButton = htmlElement!.querySelector(".plusColumns");
+    if (plusColumnsButton) {
+        plusColumnsButton.addEventListener("click", () => {
+            plusColumn(htmlElement, field);
+        });
+    }
+    const minusColumnsButton = htmlElement.querySelector(".minusColumns");
+    if (minusColumnsButton) {
+        minusColumnsButton.addEventListener("click", () => {
+            minusColumn(htmlElement, field);
+        });
+    }
+    const minusRowsButton = htmlElement.querySelector(".minusRows");
+    if (minusRowsButton) {
+        minusRowsButton.addEventListener("click", () => {
+            minusRows(htmlElement, field);
+        });
+    }
+    const plusRowsButton = htmlElement.querySelector(".plusRows");
+    if (plusRowsButton) {
+        plusRowsButton.addEventListener("click", () => {
+            plusRows(htmlElement, field);
+        });
+    }
     minusSpeed(htmlElement);
     plusSpeed(htmlElement);
 
@@ -49,18 +70,17 @@ export function createGameOfLife(htmlElement: Element) {
 
     function startGame() {
         gameIsRunning = true;
-        button!.innerHTML = "Stop";
-        timer = setInterval(() => {
-            field = getNextState(field);
-            drawField(fieldWrapper!, field);
-            if (!isAnyoneAlive(field)) {
-                alert("Death on the block");
-                stopGame();
-            }
-        }, speed);
+    button!.innerHTML = "Stop";
+    timer = setInterval(() => {
+        field = getNextState(field);
+        drawField(fieldWrapper!, field);
+        if (!isAnyoneAlive(field)) {
+            alert("Death on the block");
+            stopGame();
+        }
+    }, speed);
     }
   button!.addEventListener("click", () => {
-      console.log(field)
       if (!gameIsRunning) {
           startGame();
       } else {
@@ -74,14 +94,14 @@ export function createGameOfLife(htmlElement: Element) {
           field = inputSize(htmlElement, fieldWrapper!, field);
       });
   }
-  //   const clear = htmlElement.querySelector(".clear");
-  //   if (clear) {
-  //       clear.addEventListener("click", () => {
-  //           field = Array.from({ length: 10 }, () => Array(10).fill(0));
-  //           drawField(fieldWrapper!, field);
-  //           stopGame();
-  //       });
-  //   }
+  const clear = htmlElement.querySelector(".clear");
+  if (clear) {
+      clear.addEventListener("click", () => {
+          field = Array.from({ length: rows }, () => Array(columns).fill(0));
+          drawField(fieldWrapper!, field);
+          stopGame();
+      });
+  }
   const setFirst = htmlElement.querySelector(".setFirst");
   setFirst?.addEventListener("click", () => {
       field = gosperGliderGun();

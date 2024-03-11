@@ -42,17 +42,22 @@ export function drawField(htmlElement: Element, field: number[][]) {
       // @ts-ignore
       const y = clickedElement.getAttribute("data-y");
       if (field[y] && typeof field[y][x] !== "undefined") {
-          field[y][x] = field[y][x] === 0 ? 1 : 0;
-
-          if (y >= 0 && x >= 0) {
-              const element = document.querySelector(
-                  `[data-x="${x}"][data-y="${y}"]`,
-              );
+          
+          const element = document.querySelector(
+              `[data-x="${x}"][data-y="${y}"]`,
+          );
+          if (field[y][x] === 0) {
               // @ts-ignore
               element.style.backgroundColor = "#000000";
               // @ts-ignore
               element.className = "cell alive";
+          }else{
+              // @ts-ignore
+              element.style.backgroundColor = "#FFFFFF";
+              // @ts-ignore
+              element.className = "cell died";
           }
+          field[y][x] = field[y][x] === 0 ? 1 : 0;
       }
   });
 }
