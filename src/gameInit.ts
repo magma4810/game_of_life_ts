@@ -1,5 +1,5 @@
 export function gameInit(htmlElement: Element, speedHTML: number) {
-  htmlElement.innerHTML = `<button class = "setFirst" style = "float:right">Gosper glider gun</button><br>
+    htmlElement.innerHTML = `<button class = "setFirst" style = "float:right">Gosper glider gun</button><br>
   <button class = "setSecond" style = "float:right">Virus</button>
   <button class = "setThird" style = "float:right">Locomotive</button>
   Columns<button class = "minusColumns">-</button>
